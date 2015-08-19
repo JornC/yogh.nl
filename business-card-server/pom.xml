@@ -31,6 +31,13 @@
       <version>2.1.2</version>
     </dependency>
     <dependency>
+      <groupId>nl.yogh</groupId>
+      <artifactId>business-card-client</artifactId>
+      <version>0.1</version>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>junit </groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -46,31 +53,32 @@
       <resource>
         <directory>src/main/resources</directory>
       </resource>
-      <resource>
-        <directory>/business-card-client/war/WEB-INF/classes</directory>
-      </resource>
-      <resource>
-        <directory>${project.build.directory}/generated-sources/gwt</directory>      
-      </resource>
     </resources>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <configuration>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <packagingIncludes>WEB-INF/deploy/**/*,application/**/*</packagingIncludes>
+          <attachClasses>true</attachClasses>
+          <webResources>
+            <webResource>
+              <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+              <includes>
+                <include>web.xml</include>
+              </includes>
+              <targetPath>WEB-INF</targetPath>
+              <filtering>true</filtering>
+            </webResource>
+          </webResources>
+          <warSourceExcludes>application/application.nocache.js</warSourceExcludes>
+          <overlays>
+            <overlay>
+              <groupId>nl.yogh</groupId>
+              <artifactId>business-card-client</artifactId>
+            </overlay>
+          </overlays>
         </configuration>
       </plugin>
     </plugins>
