@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  <ui:with field="res" type="nl.yogh.business.card.client.resources.R.ApplicationResource" />
+  <ui:style>
+    .container {
+    color: #CCC;
+    text-shadow: 1px 1px 2px #D7FBD2;
+    }
+  </ui:style>
+  <g:FlowPanel ui:field="container" styleName="{style.container} {res.css.flex} {res.css.grow} {res.css.wrap} {res.css.spaceAround}" />
+</ui:UiBinder>

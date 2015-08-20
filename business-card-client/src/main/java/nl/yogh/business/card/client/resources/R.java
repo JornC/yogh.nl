@@ -22,6 +22,8 @@ public final class R {
 
     String spaceAround();
 
+    String wrap();
+
     String resize();
 
     String grow();
