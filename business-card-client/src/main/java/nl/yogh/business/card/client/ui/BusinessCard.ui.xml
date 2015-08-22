@@ -6,20 +6,24 @@
     width: 450px;
     height: 250px;
     border-top: 10px solid #21B6D8;
-    background-color: #DDD;
+    background-color: rgba(33, 182, 216, 0.3);
     box-shadow: 2px 2px 2px gray;
     }
     .title {
     font-size: 96px;
     font-weight: bold;
+    color: white;
     }
     .name {
     text-decoration: none;
-    color: black;
+    color: white;
     }
     .info {
     margin: 7px;
     font-weight: bold;
+    }
+    .email {
+    color: red;
     }
   </ui:style>
   <g:FlowPanel styleName="{res.css.flex} {res.css.grow} {res.css.alignCenter} {res.css.justifyCenter}">
