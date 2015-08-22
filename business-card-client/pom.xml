@@ -7,28 +7,33 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>business-card-client</artifactId>
   <packaging>war</packaging>
-  <name></name>
+  <name>Business card client</name>
 
   <dependencies>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${com.google.gwt.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
-      <version>${com.google.gwt.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-dev</artifactId>
-      <version>${com.google.gwt.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
       <version>2.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.gwt-crypto</groupId>
+      <artifactId>gwt-crypto</artifactId>
+      <version>2.3.0</version>
     </dependency>
   </dependencies>
 

@@ -9,6 +9,8 @@ public class BitcoinBlockchain {
   private static final int HEX_BYTE_SIZE = 2;
 
   public static String getHexAt(final int counter) {
-    return BLOCKCHAIN_HEX.substring(counter, counter + HEX_BYTE_SIZE);
+    final int doubleCounter = counter * 2;
+
+    return BLOCKCHAIN_HEX.substring(doubleCounter, doubleCounter + HEX_BYTE_SIZE);
   }
 }

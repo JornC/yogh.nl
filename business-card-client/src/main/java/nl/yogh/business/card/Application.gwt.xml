@@ -9,6 +9,7 @@
   <inherits name='com.google.web.bindery.event.Event' />
 
   <inherits name="com.google.gwt.inject.Inject" />
+  <inherits name="com.googlecode.gwt.crypto.Crypto" />
 
   <entry-point class='nl.yogh.business.card.client.Application' />
 
