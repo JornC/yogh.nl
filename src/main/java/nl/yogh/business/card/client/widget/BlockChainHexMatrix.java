@@ -29,7 +29,7 @@ public class BlockChainHexMatrix extends Composite implements ResizeHandler {
 
   private static final BlockChainHexMatrixUiBinder UI_BINDER = GWT.create(BlockChainHexMatrixUiBinder.class);
 
-  private static final int PERIOD = 1500;
+  private static final int PERIOD = 3000;
 
   /**
    * Hard coded label surface. Hack used to make execution way more efficient.

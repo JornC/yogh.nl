@@ -3,6 +3,9 @@
   xmlns:a="urn:import:nl.yogh.business.card.client.ui" xmlns:w="urn:import:nl.yogh.business.card.client.widget">
   <ui:with field="res" type="nl.yogh.business.card.client.resources.R.ApplicationResource" />
   <ui:style>
+    .panel {
+    background: #222;
+    }
     .card {
     width: 450px;
     height: 250px;
@@ -16,7 +19,7 @@
     height: 100%;
     }
   </ui:style>
-  <g:FlowPanel styleName="{res.css.flex} {res.css.grow}">
+  <g:FlowPanel styleName="{res.css.flex} {res.css.grow} {style.panel}">
     <a:BusinessCard addStyleNames="{style.businessCard}" />
     <w:BlockChainHexMatrix />
   </g:FlowPanel>

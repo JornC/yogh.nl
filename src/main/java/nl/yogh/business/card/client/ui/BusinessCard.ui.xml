@@ -5,9 +5,9 @@
     .card {
     width: 450px;
     height: 250px;
-    border-top: 10px solid #21B6D8;
-    background-color: rgba(33, 182, 216, 0.3);
-    box-shadow: 2px 2px 2px gray;
+    border-top: 10px solid #145f94;
+    background-color: #093448cc;
+    box-shadow: 2px 2px 2px #2d2d2d;
     }
     .title {
     font-size: 96px;
@@ -30,7 +30,6 @@
     <g:FlowPanel styleName="{style.card} {res.css.flex} {res.css.alignCenter} {res.css.spaceAround}">
       <g:Label text="Yogh" styleName="{style.title}" />
       <g:FlowPanel styleName="{res.css.flex} {res.css.columns}">
-        <g:Anchor href="https://onename.com/jornc" text="Jorn C" target="_blank" styleName="{style.info} {style.name}" />
         <g:Anchor href="mailto:jorn@yogh.nl" text="jorn@yogh.nl" styleName="{style.info} {style.email}" />
       </g:FlowPanel>
     </g:FlowPanel>
