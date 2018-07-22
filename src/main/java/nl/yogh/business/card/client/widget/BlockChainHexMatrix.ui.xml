@@ -11,6 +11,7 @@
     padding: 1px;
     color: #4a6773;
     flex-shrink: 0;
+    width: 20px;
     }
     .highlight {
     background-color: #2c4f6d;
