@@ -51,10 +51,13 @@
         <directory>src/main/java</directory>
       </resource>
       <resource>
-        <directory>/business-card-client/war/WEB-INF/classes</directory>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/webapp</directory>
       </resource>
     </resources>
-    
+
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -72,19 +75,15 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.3</version>
         <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <packagingIncludes>WEB-INF/deploy/**/*,application/**/*</packagingIncludes>
+          <packagingExcludes>WEB-INF/classes/**/*,WEB-INF/lib/**/*</packagingExcludes>
+          <webResources>
+            <resource>
+              <directory>src/main/webapp</directory>
+            </resource>
+          </webResources>
         </configuration>
       </plugin>
     </plugins>
