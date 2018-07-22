@@ -30,7 +30,7 @@
     <g:FlowPanel styleName="{style.card} {res.css.flex} {res.css.alignCenter} {res.css.spaceAround}">
       <g:Label text="Yogh" styleName="{style.title}" />
       <g:FlowPanel styleName="{res.css.flex} {res.css.columns}">
-        <g:Anchor href="mailto:jorn@yogh.nl" text="jorn@yogh.nl" styleName="{style.info} {style.email}" />
+        <g:Anchor href="mailto:info@yogh.nl" text="info@yogh.nl" styleName="{style.info} {style.email}" />
       </g:FlowPanel>
     </g:FlowPanel>
   </g:FlowPanel>
