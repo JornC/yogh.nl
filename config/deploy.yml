@@ -1,0 +1,26 @@
+service: yogh
+image: jornc/yogh
+
+servers:
+  web:
+    hosts:
+      - 116.202.98.229
+
+proxy:
+  host: yogh.nl
+  ssl: true
+  app_port: 80
+  healthcheck:
+    path: /
+
+registry:
+  server: ghcr.io
+  username: JornC
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: arm64
+  remote: ssh://root@116.202.98.229
+  cache:
+    type: gha
