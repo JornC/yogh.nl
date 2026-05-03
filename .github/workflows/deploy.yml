@@ -23,7 +23,7 @@ jobs:
           ruby-version: '3.3'
 
       - name: Install Kamal
-        run: gem install kamal -v 2.7
+        run: gem install kamal -v '~> 2.10'
 
       - uses: webfactory/ssh-agent@v0.10.0
         with:
