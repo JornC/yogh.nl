@@ -377,7 +377,8 @@ fieldset:disabled .choice { opacity: .45; }
     { id: 'full-berry', name: 'Full Berry', hex: '#8B4349' },
     { id: 'ral7016', name: 'RAL 7016 Antraciet', hex: '#383E42' },
   ];
-  const OAK = '#C9A679';
+  const OAK = '#CC9A55'; // golden oak
+  const PLANK = 18, FLOOR_T = 2.2; // plank width and floor build-up, cm
   const ref = (id, name) => ({ id, name });
   const GROUPS = [
     { key: 'wall', label: 'Muren', opts: PAINT },
@@ -394,11 +395,20 @@ fieldset:disabled .choice { opacity: .45; }
   const COMMON = { low: 'same', woodTop: 'same', door: 'geldersblauw', skirt: 'same', box: 'same' };
   // One colour for the whole wall; bold enough to stand next to the red, green and blue rooms.
   const PRESETS = [
-    { name: 'Nachtblauw', set: { ...COMMON, wall: 'geldersblauw', ceil: 'ral9016', wood: 'geldersblauw' } },
+    { name: 'Zachtblauw', set: { ...COMMON, wall: 'zachtblauw', ceil: 'ral9016', wood: 'geldersblauw' } },
+    { name: 'Zachtblauw, witte kast', set: { ...COMMON, wall: 'zachtblauw', ceil: 'ral9016', wood: 'ral9010' } },
+    { name: 'Zachtblauw overal', set: { ...COMMON, wall: 'zachtblauw', ceil: 'same', wood: 'grijsblauw' } },
+    { name: 'Lucht en oker', set: { ...COMMON, wall: 'zachtblauw', ceil: 'ral9016', wood: 'full-caramel' } },
     { name: 'Grijsblauw', set: { ...COMMON, wall: 'grijsblauw', ceil: 'ral9016', wood: 'geldersblauw' } },
     { name: 'Grijsblauw overal', set: { ...COMMON, wall: 'grijsblauw', ceil: 'same', wood: 'grijsblauw' } },
+    { name: 'Grijsblauw en oker', set: { ...COMMON, wall: 'grijsblauw', ceil: 'ral9016', wood: 'full-caramel' } },
+    { name: 'Nachtblauw', set: { ...COMMON, wall: 'geldersblauw', ceil: 'ral9016', wood: 'geldersblauw' } },
+    { name: 'Nachtblauw, witte kast', set: { ...COMMON, wall: 'geldersblauw', ceil: 'ral9016', wood: 'ral9010' } },
     { name: 'Bosgroen', set: { ...COMMON, wall: 'full-river', ceil: 'ral9016', wood: 'full-river' } },
+    { name: 'Bosgroen en oker', set: { ...COMMON, wall: 'full-river', ceil: 'ral9016', wood: 'full-caramel' } },
     { name: 'Olijf', set: { ...COMMON, wall: 'olijfgroen', ceil: 'off-white', wood: 'olijfgroen' } },
+    { name: 'Hardsteen', set: { ...COMMON, wall: 'hardsteen', ceil: 'ral9016', wood: 'ral9010' } },
+    { name: 'Greige en blauw', set: { ...COMMON, wall: 'real-greige', ceil: 'ral9016', wood: 'geldersblauw' } },
     { name: 'Oker met blauw', set: { ...COMMON, wall: 'full-caramel', ceil: 'ral9016', wood: 'geldersblauw' } },
     { name: 'Wit, blauwe kast', set: { ...COMMON, wall: 'ral9010', ceil: 'ral9016', wood: 'geldersblauw' } },
     { name: 'Wit, okerkast', set: { ...COMMON, wall: 'ral9010', ceil: 'ral9016', wood: 'full-caramel' } },
@@ -494,7 +504,7 @@ fieldset:disabled .choice { opacity: .45; }
     if (after) {
       s += `<polygon class="f-wood" points="${P(roomPoly)}"/>`;
       s += `<rect class="ramp" x="0" y="${r(rampFrom)}" width="${E}" height="${rampTo - rampFrom}" clip-path="url(#roomclip)"/>`;
-      for (let v = 7; v < M.len; v += 7) s += `<line class="plank" x1="${r(westX(v))}" y1="${v}" x2="${r(rowEnd(v))}" y2="${v}"/>`;
+      for (let v = PLANK; v < M.len; v += PLANK) s += `<line class="plank" x1="${r(westX(v))}" y1="${v}" x2="${r(rowEnd(v))}" y2="${v}"/>`;
     } else {
       s += `<polygon class="f-concrete" points="${P(slabs[0].poly)}"/>`;
       s += `<polygon class="f-concrete hi" points="${P(slabs[2].poly)}"/>`;
@@ -659,7 +669,7 @@ fieldset:disabled .choice { opacity: .45; }
   window.Bedstede = {
     M, A, E, sF, sT, mid, wN0, blockX, closetH, woodFrom, woodSplit, closetWoodPoly, closetTopPoly, hole, doors, windows, lamps, switches, box, verdelerX0, slabs,
     cN, cS, westX, closetPoly, rowEnd, floorEast, roomPoly, floorAfter,
-    state, colors, subscribe: f => subs.push(f),
+    PLANK, FLOOR_T, state, colors, subscribe: f => subs.push(f),
   };
 })();
 </script>
@@ -803,8 +813,8 @@ function main() {
   const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 }));
   composer.addPass(new RenderPass(scene, camera));
   const gtao = new GTAOPass(scene, camera, 1, 1);
-  gtao.updateGtaoMaterial({ radius: 0.3, distanceExponent: 1.5, thickness: 1, scale: 1.1, samples: phone ? 8 : 16 });
-  gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 16 });
+  gtao.updateGtaoMaterial({ radius: 0.12, distanceExponent: 2, thickness: 0.5, scale: 1, samples: phone ? 12 : 16 });
+  gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 10, rings: 3, samples: 24 });
   composer.addPass(gtao);
   composer.addPass(new OutputPass());
 
@@ -969,27 +979,35 @@ function main() {
   const cFloor = canvas(FW, FH), cFloorH = canvas(FW, FH);
   {
     const g = cFloor.getContext('2d'), gh = cFloorH.getContext('2d'), rnd = rng(11);
-    const base = new THREE.Color('#C9A679'), hsl = {};
+    const base = new THREE.Color(B.colors().floor), hsl = {};
     base.getHSL(hsl, THREE.SRGBColorSpace);
     gh.fillStyle = '#c8c8c8'; gh.fillRect(0, 0, FW, FH);
-    for (let v = 0; v < M.len; v += 7) {
-      const y0 = v * fv, rh = 7 * fv;
-      let u = -rnd() * 45;
+    for (let v = 0; v < M.len; v += B.PLANK) {
+      const y0 = v * fv, rh = B.PLANK * fv;
+      let u = -rnd() * 120;
       while (u < E) {
-        const len = 24 + rnd() * 36, x0 = u * fu, pw = len * fu;
-        const c = new THREE.Color().setHSL(hsl.h + (rnd() - 0.5) * 0.012, hsl.s * (0.78 + rnd() * 0.14), hsl.l * (0.93 + rnd() * 0.11), THREE.SRGBColorSpace);
+        const len = 70 + rnd() * 120, x0 = u * fu, pw = len * fu;
+        const c = new THREE.Color().setHSL(hsl.h + (rnd() - 0.5) * 0.014, hsl.s * (0.82 + rnd() * 0.16), hsl.l * (0.92 + rnd() * 0.12), THREE.SRGBColorSpace);
         g.fillStyle = `#${c.getHexString(THREE.SRGBColorSpace)}`;
         g.fillRect(x0, y0, pw, rh);
         g.save(); g.beginPath(); g.rect(x0, y0, pw, rh); g.clip();
-        for (let k = 0; k < 9; k++) {
-          const yy = y0 + rnd() * rh, amp = 0.4 + rnd() * 1.5, ph = rnd() * 6.3, fr = 0.01 + rnd() * 0.03;
-          g.strokeStyle = rnd() < 0.7 ? `rgba(80,50,22,${(0.06 + rnd() * 0.14).toFixed(3)})` : `rgba(255,235,200,${(0.05 + rnd() * 0.1).toFixed(3)})`;
-          g.lineWidth = 0.5 + rnd() * 1.6;
+        for (let k = 0; k < 24; k++) {
+          const yy = y0 + rnd() * rh, amp = 0.6 + rnd() * 3, ph = rnd() * 6.3, fr = 0.004 + rnd() * 0.02;
+          g.strokeStyle = rnd() < 0.7 ? `rgba(95,55,20,${(0.05 + rnd() * 0.13).toFixed(3)})` : `rgba(255,225,160,${(0.05 + rnd() * 0.1).toFixed(3)})`;
+          g.lineWidth = 0.5 + rnd() * 1.8;
           g.beginPath(); for (let x = x0; x <= x0 + pw; x += 6) { const y = yy + Math.sin(x * fr + ph) * amp; x === x0 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
         }
-        if (rnd() < 0.12) {
-          const kx = x0 + rnd() * pw, ky = y0 + rh * (0.3 + rnd() * 0.4);
-          g.fillStyle = 'rgba(70,42,20,.45)'; g.beginPath(); g.ellipse(kx, ky, 3 + rnd() * 3, 1.5 + rnd() * 1.5, 0, 0, 7); g.fill();
+        // Cathedral grain: a few nested arches in the middle of some planks.
+        if (rnd() < 0.5) {
+          const cx = x0 + pw * (0.3 + rnd() * 0.4), cy = y0 + rh * (0.35 + rnd() * 0.3);
+          for (let k = 0; k < 5; k++) {
+            g.strokeStyle = `rgba(95,55,20,${(0.07 + rnd() * 0.08).toFixed(3)})`; g.lineWidth = 0.8 + rnd();
+            g.beginPath(); g.ellipse(cx, cy, 20 + k * 14 + rnd() * 6, 4 + k * 3, 0, 0, 7); g.stroke();
+          }
+        }
+        for (let k = rnd() < 0.35 ? 1 + Math.floor(rnd() * 2) : 0; k > 0; k--) {
+          const kx = x0 + rnd() * pw, ky = y0 + rh * (0.2 + rnd() * 0.6);
+          g.fillStyle = 'rgba(70,40,15,.5)'; g.beginPath(); g.ellipse(kx, ky, 3 + rnd() * 4, 2 + rnd() * 2, 0, 0, 7); g.fill();
         }
         g.restore();
         g.fillStyle = 'rgba(40,25,12,.55)'; g.fillRect(x0, y0, 1.2, rh);
@@ -1000,7 +1018,7 @@ function main() {
       gh.fillStyle = '#000'; gh.fillRect(0, y0, FW, 1.4);
     }
   }
-  const texFloor = toTex(cFloor), nFloor = normalMap(cFloorH, 2.2);
+  const texFloor = toTex(cFloor), nFloor = normalMap(cFloorH, 2.6);
   texFloor.wrapS = texFloor.wrapT = nFloor.wrapS = nFloor.wrapT = THREE.ClampToEdgeWrapping;
 
   // Sheer curtain: soft vertical folds and a gathered heading.
@@ -1030,7 +1048,7 @@ function main() {
   const matFoot = std({ map: texPaint, roughness: 0.8 });
   const matLowCloset = std({ map: texStone, normalMap: nStone, side: THREE.DoubleSide });
   const matBox = std({ side: THREE.DoubleSide, roughness: 0.55 });
-  const matOak = std({ map: texGrain, side: THREE.DoubleSide, roughness: 0.5, color: '#C9A679' });
+  const matOak = std({ map: texGrain, side: THREE.DoubleSide, roughness: 0.5, color: B.colors().floor });
   const matFloor = std({ map: texFloor, normalMap: nFloor, normalScale: v2(0.8), roughness: 0.48 });
   const matSkirt = std({ roughness: 0.5 });
   const matDoor = std({ color: '#2C3B53', roughness: 0.5 });
@@ -1102,7 +1120,7 @@ function main() {
       const gs = new Geo();
       let t = 0;
       for (const [s0, s1] of [...skip, [len, len]]) {
-        if (s0 - t > 1) wallBox(gs, a, d, n, t, s0, 0, 1.4, 0, 8);
+        if (s0 - t > 1) wallBox(gs, a, d, n, t, s0, 0, 1.4, 0, 10);
         t = Math.max(t, s1);
       }
       if (gs.p.length) {
@@ -1127,7 +1145,7 @@ function main() {
     for (let v = mid - 50; v <= mid + 50; v += 4) cuts.add(v);
     const vs = [...cuts].filter(v => v >= 0 && v <= M.len).sort((a, b) => a - b);
     const east = v => B.floorEast(v);
-    const P = (u, v) => [u * S, (B.floorAfter(v) + 1.5) * S, v * S];
+    const P = (u, v) => [u * S, (B.floorAfter(v) + B.FLOOR_T) * S, v * S];
     const UV = (u, v) => [u / E, 1 - v / M.len];
     for (let i = 0; i < vs.length - 1; i++) {
       const v0 = vs[i], v1 = vs[i + 1], e0 = east(v0 + 1e-3), e1 = east(v1 - 1e-3), w0 = B.westX(v0), w1 = B.westX(v1);
@@ -1247,20 +1265,22 @@ function main() {
     wallQuad(gj, d.b, along(d.w, 12), 0, A.doorH, m);
     capPoly(gj, [d.a, along(0, 12), along(d.w, 12), d.b], A.doorH, false);
     // Architrave around the opening on the room side.
-    wallBox(gj, d.a, d.d, d.n, -7, 0, 0, 1.6, 0, A.doorH + 7);
-    wallBox(gj, d.a, d.d, d.n, d.w, d.w + 7, 0, 1.6, 0, A.doorH + 7);
-    wallBox(gj, d.a, d.d, d.n, -7, d.w + 7, 0, 1.6, A.doorH, A.doorH + 7);
+    const byCloset = t => { const v = along(t)[1]; return Math.abs(v - B.cN) < 1 || Math.abs(v - B.cS) < 1; };
+    const left = byCloset(0) ? 0 : -7, right = byCloset(d.w) ? d.w : d.w + 7;
+    if (left < 0) wallBox(gj, d.a, d.d, d.n, -7, 0, 0, 1.6, 0, A.doorH + 7);
+    if (right > d.w) wallBox(gj, d.a, d.d, d.n, d.w, d.w + 7, 0, 1.6, 0, A.doorH + 7);
+    wallBox(gj, d.a, d.d, d.n, left, right, 0, 1.6, A.doorH, A.doorH + 7);
     add(g, gj, matJamb);
 
     const winY0 = 96, winY1 = A.doorH - 14;
     const gl = new Geo(), gm = new Geo(), gg = new Geo(), gc = new Geo();
     const leafBox = (s0, s1, y0, y1) => wallBox(gl, d.a, d.d, d.n, s0, s1, leafIn - 3.5, leafIn, y0, y1);
     const mould = (s0, s1, y0, y1) => wallBox(gm, d.a, d.d, d.n, s0, s1, leafIn, leafIn + 0.8, y0, y1);
-    for (const [s0, s1] of [[0, d.w / 2 - 0.3], [d.w / 2 + 0.3, d.w]]) {
-      leafBox(s0, s1, 0, winY0);
-      leafBox(s0, s1, winY1, A.doorH);
-      leafBox(s0, s0 + 6, winY0, winY1);
-      leafBox(s1 - 6, s1, winY0, winY1);
+    for (const [s0, s1, e0, e1] of [[0, d.w / 2 - 0.3, -1, d.w / 2 - 0.3], [d.w / 2 + 0.3, d.w, d.w / 2 + 0.3, d.w + 1]]) {
+      leafBox(e0, e1, 0, winY0);
+      leafBox(e0, e1, winY1, A.doorH);
+      leafBox(e0, s0 + 6, winY0, winY1);
+      leafBox(s1 - 6, e1, winY0, winY1);
       // Moulding around the lower panel and the glass.
       for (const [y0, y1] of [[16, winY0 - 14], [winY0, winY1]]) {
         const a0 = s0 + 6, a1 = s1 - 6, w = 1.4;
